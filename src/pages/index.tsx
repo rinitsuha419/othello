@@ -5,29 +5,38 @@ const Home = () => {
   const [turnColor, setTrunColor] = useState(1);
   const [board, setBoard] = useState([
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1],
-    [0, 0, 0, 0, 0, 0, 2, 1],
-    [0, 0, 0, 0, 0, 1, 2, 1],
-    [0, 0, 0, 0, 2, 1, 2, 1],
-    [0, 0, 0, 1, 2, 1, 2, 1],
-    [0, 0, 2, 1, 2, 1, 2, 1],
-    [0, 2, 1, 2, 1, 2, 1, 2],
+    [2, 2, 1, 2, 1, 2, 1, 0],
+    [1, 1, 2, 1, 2, 1, 2, 0],
+    [2, 2, 1, 2, 1, 2, 1, 0],
+    [1, 1, 2, 1, 2, 1, 2, 0],
+    [2, 2, 1, 2, 1, 2, 1, 0],
+    [1, 1, 2, 1, 2, 1, 2, 0],
+    [2, 1, 2, 1, 2, 1, 2, 0],
   ]);
 
   const clickHandler = (x: number, y: number) => {
     console.log(x, y);
     const newBoard = structuredClone(board);
 
-    if (board[y + 1] !== undefined && board[y + 1][x] === 3 - turnColor) {
-      if (newBoard[y + 2] !== undefined && newBoard[y + 2][x] === turnColor) {
-        newBoard[y][x] = turnColor;
-        setBoard(newBoard);
-        setTrunColor(3 - turnColor);
-      } else if (newBoard[y + 2] !== undefined && newBoard[y + 2][x] === 3 - turnColor) {
-        if (newBoard[y + 3] !== undefined && newBoard[y + 3][x] === turnColor) {
-          newBoard[y][x] = turnColor;
-          setBoard(newBoard);
-          setTrunColor(3 - turnColor);
+    for (let distance = 1; distance < 8; distance++) {
+      if (newBoard[y + distance] === undefined) {
+        break;
+      } else {
+        if (newBoard[y + distance][x] === undefined) {
+          break;
+        } else if (newBoard[y + distance][x] === 0) {
+          break;
+        } else if (newBoard[y + distance][x] === turnColor) {
+          if (distance > 1) {
+            for (let back = distance; back >= 0; back--) {
+              newBoard[y + back][x] = turnColor;
+            }
+            setBoard(newBoard);
+            setTrunColor(3 - turnColor);
+          }
+          break;
+        } else if (newBoard[y + distance][x] === 3 - turnColor) {
+          continue;
         }
       }
     }
