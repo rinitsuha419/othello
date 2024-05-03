@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styles from './index.module.css';
+import { NoParamCallback } from 'fs';
 
 const Home = () => {
   const [turnColor, setTrunColor] = useState(1);
@@ -18,11 +19,26 @@ const Home = () => {
     console.log(x, y);
     const newBoard = structuredClone(board);
 
+    const mabeyTurnables: { x: number; y: number }[] = [];
     for (let i: number = 0; i < 3; i++) {
+      const checkingColor = board[y + i + 1][x];
+      if (checkingColor === 3 - turnColor) {
+        mabeyTurnables.push({ x, y: y + i + 1 });
+      } else if (checkingColor === turnColor) {
+        if (mabeyTurnables.length > 0) {
+          for (const item of mabeyTurnables) {
+            console.log(item);
+            newBoard[y][x] = 3 - turnColor;
+          }
+          newBoard[y][x] = turnColor;
+        }
+      }
+
       if (board[y + i + 2][x] === turnColor) {
         newBoard[y][x] = turnColor;
       }
     }
+
     console.log(turnColor);
     if (board[y][x + 1] === 3 - turnColor && board[y][x + 2] === turnColor) {
       newBoard[y][x] = turnColor;
