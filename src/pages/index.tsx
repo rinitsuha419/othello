@@ -5,7 +5,7 @@ const Home = () => {
   const [turnColor, setTrunColor] = useState(1);
   const [board, setBoard] = useState([
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 2, 0, 0, 0],
     [0, 0, 0, 0, 2, 0, 0, 0],
     [0, 0, 0, 1, 2, 0, 0, 0],
     [0, 0, 0, 2, 1, 0, 0, 0],
@@ -18,18 +18,10 @@ const Home = () => {
     console.log(x, y);
     const newBoard = structuredClone(board);
 
-    if (board[y + 1][x] === 3 - turnColor && board[y + 2][x] === turnColor) {
-      newBoard[y][x] = turnColor;
-      newBoard[y + 1][x] = turnColor;
-    }
-    if (
-      board[y + 1][x] === 3 - turnColor &&
-      board[y + 2][x] === 3 - turnColor &&
-      board[y + 3][x] === turnColor
-    ) {
-      newBoard[y][x] = turnColor;
-      newBoard[y + 1][x] = turnColor;
-      newBoard[y + 2][x] = turnColor;
+    for (let i = 0; i < 3; i++) {
+      if (board[y + 2][x] === turnColor) {
+        newBoard[y][x] = turnColor;
+      }
     }
 
     if (board[y][x + 1] === 3 - turnColor && board[y][x + 2] === turnColor) {
