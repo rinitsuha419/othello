@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import styles from './index.module.css';
-import { NoParamCallback } from 'fs';
 
 const Home = () => {
   const [turnColor, setTrunColor] = useState(1);
@@ -28,14 +27,10 @@ const Home = () => {
         if (mabeyTurnables.length > 0) {
           for (const item of mabeyTurnables) {
             console.log(item);
-            newBoard[y][x] = 3 - turnColor;
+            newBoard[y + item.x][x + item.y] = turnColor;
           }
           newBoard[y][x] = turnColor;
         }
-      }
-
-      if (board[y + i + 2][x] === turnColor) {
-        newBoard[y][x] = turnColor;
       }
     }
 
