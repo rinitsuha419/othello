@@ -20,6 +20,11 @@ const Home = () => {
 
     if (board[y + 1][x] === 3 - turnColor) {
       newBoard[y][x] = turnColor;
+      newBoard[y + 1][x] = turnColor;
+    }
+    if (board[y][x + 1] === 3 - turnColor) {
+      newBoard[y][x] = turnColor;
+      newBoard[y][x + 1] = turnColor;
     }
 
     setBoard(newBoard);
