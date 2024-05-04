@@ -8,7 +8,7 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 1, 2, 0, 0, 0],
-    [0, 0, 0, 2, 1, 0, 0, 0],
+    [0, 0, 2, 2, 1, 1, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -17,17 +17,18 @@ const Home = () => {
   const clickHandler = (x: number, y: number) => {
     console.log(x, y);
     const newBoard = structuredClone(board);
-
     const mabeyTurnables: { x: number; y: number }[] = [];
 
-    //上向き
-    for (let i: number = 0; i < 3; i++) {
+    //下行き
+    for (let i: number = 0; i < 8; i++) {
       if (board[y + i + 1] === undefined) {
         break;
       }
       const checkingColor = board[y + i + 1][x];
       if (checkingColor === 3 - turnColor) {
         mabeyTurnables.push({ x, y: y + i + 1 });
+      } else if (checkingColor === 0) {
+        break;
       } else if (checkingColor === turnColor) {
         if (mabeyTurnables.length > 0) {
           for (const item of mabeyTurnables) {
@@ -37,16 +38,20 @@ const Home = () => {
           }
           newBoard[y][x] = turnColor;
         }
+        break;
       }
     }
-    //左
-    for (let i: number = 0; i < 3; i++) {
+
+    //右行き
+    for (let i: number = 0; i < 8; i++) {
       const checkingColor = board[y][x + i + 1];
       if (checkingColor === undefined) {
         break;
       }
       if (checkingColor === 3 - turnColor) {
         mabeyTurnables.push({ x: x + i + 1, y });
+      } else if (checkingColor === 0) {
+        break;
       } else if (checkingColor === turnColor) {
         if (mabeyTurnables.length > 0) {
           for (const item of mabeyTurnables) {
@@ -56,16 +61,20 @@ const Home = () => {
           }
           newBoard[y][x] = turnColor;
         }
+        break;
       }
     }
-    //下
-    for (let i: number = 0; i < 3; i++) {
+
+    //上行き
+    for (let i: number = 0; i < 8; i++) {
       if (board[y - i - 1] === undefined) {
         break;
       }
       const checkingColor = board[y - i - 1][x];
       if (checkingColor === 3 - turnColor) {
         mabeyTurnables.push({ x, y: y - i - 1 });
+      } else if (checkingColor === 0) {
+        break;
       } else if (checkingColor === turnColor) {
         if (mabeyTurnables.length > 0) {
           for (const item of mabeyTurnables) {
@@ -75,16 +84,20 @@ const Home = () => {
           }
           newBoard[y][x] = turnColor;
         }
+        break;
       }
     }
-    //右
-    for (let i: number = 0; i < 3; i++) {
+
+    //左行き
+    for (let i: number = 0; i < 8; i++) {
       const checkingColor = board[y][x - i - 1];
       if (checkingColor === undefined) {
         break;
       }
       if (checkingColor === 3 - turnColor) {
         mabeyTurnables.push({ x: x - i - 1, y });
+      } else if (checkingColor === 0) {
+        break;
       } else if (checkingColor === turnColor) {
         if (mabeyTurnables.length > 0) {
           for (const item of mabeyTurnables) {
@@ -94,6 +107,7 @@ const Home = () => {
           }
           newBoard[y][x] = turnColor;
         }
+        break;
       }
     }
     setBoard(newBoard);
