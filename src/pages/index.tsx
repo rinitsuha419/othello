@@ -1,6 +1,17 @@
 import { useState } from 'react';
 import styles from './index.module.css';
 
+const directions = [
+  [-1, 1],
+  [0, 1],
+  [1, 1],
+  [1, 0],
+  [1, -1],
+  [0, -1],
+  [-1, -1],
+  [-1, 0],
+];
+
 const Home = () => {
   const [turnColor, setTrunColor] = useState(1);
   const [board, setBoard] = useState([
@@ -17,99 +28,38 @@ const Home = () => {
   const clickHandler = (x: number, y: number) => {
     console.log(x, y);
     const newBoard = structuredClone(board);
-    const mabeyTurnables: { x: number; y: number }[] = [];
 
-    //下行き
-    for (let i: number = 0; i < 8; i++) {
-      if (board[y + i + 1] === undefined) {
-        break;
-      }
-      const checkingColor = board[y + i + 1][x];
-      if (checkingColor === 3 - turnColor) {
-        mabeyTurnables.push({ x, y: y + i + 1 });
-      } else if (checkingColor === 0) {
-        break;
-      } else if (checkingColor === turnColor) {
-        if (mabeyTurnables.length > 0) {
-          for (const item of mabeyTurnables) {
-            console.log(item);
-            console.log(mabeyTurnables);
-            newBoard[item.y][item.x] = turnColor;
-          }
-          newBoard[y][x] = turnColor;
+    for (let n: number = 0; n < 8; n++) {
+      const maybeTurnables: { x: number; y: number }[] = [];
+      const [dx, dy] = directions[n];
+
+      //下行きだった
+      for (let i: number = 1; i < 8; i++) {
+        if (board[y + i * dy] === undefined) {
+          break;
         }
-        break;
+        const checkingColor = board[y + i * dy][x + i * dx];
+        if (checkingColor === undefined) {
+          break;
+        }
+        if (checkingColor === 3 - turnColor) {
+          maybeTurnables.push({ x: x + i * dx, y: y + i * dy });
+        } else if (checkingColor === 0) {
+          break;
+        } else if (checkingColor === turnColor) {
+          if (maybeTurnables.length > 0) {
+            for (const item of maybeTurnables) {
+              console.log(item);
+              console.log(maybeTurnables);
+              newBoard[item.y][item.x] = turnColor;
+            }
+            newBoard[y][x] = turnColor;
+          }
+          break;
+        }
       }
     }
 
-    //右行き
-    for (let i: number = 0; i < 8; i++) {
-      const checkingColor = board[y][x + i + 1];
-      if (checkingColor === undefined) {
-        break;
-      }
-      if (checkingColor === 3 - turnColor) {
-        mabeyTurnables.push({ x: x + i + 1, y });
-      } else if (checkingColor === 0) {
-        break;
-      } else if (checkingColor === turnColor) {
-        if (mabeyTurnables.length > 0) {
-          for (const item of mabeyTurnables) {
-            console.log(item);
-            console.log(mabeyTurnables);
-            newBoard[item.y][item.x] = turnColor;
-          }
-          newBoard[y][x] = turnColor;
-        }
-        break;
-      }
-    }
-
-    //上行き
-    for (let i: number = 0; i < 8; i++) {
-      if (board[y - i - 1] === undefined) {
-        break;
-      }
-      const checkingColor = board[y - i - 1][x];
-      if (checkingColor === 3 - turnColor) {
-        mabeyTurnables.push({ x, y: y - i - 1 });
-      } else if (checkingColor === 0) {
-        break;
-      } else if (checkingColor === turnColor) {
-        if (mabeyTurnables.length > 0) {
-          for (const item of mabeyTurnables) {
-            console.log(item);
-            console.log(mabeyTurnables);
-            newBoard[item.y][item.x] = turnColor;
-          }
-          newBoard[y][x] = turnColor;
-        }
-        break;
-      }
-    }
-
-    //左行き
-    for (let i: number = 0; i < 8; i++) {
-      const checkingColor = board[y][x - i - 1];
-      if (checkingColor === undefined) {
-        break;
-      }
-      if (checkingColor === 3 - turnColor) {
-        mabeyTurnables.push({ x: x - i - 1, y });
-      } else if (checkingColor === 0) {
-        break;
-      } else if (checkingColor === turnColor) {
-        if (mabeyTurnables.length > 0) {
-          for (const item of mabeyTurnables) {
-            console.log(item);
-            console.log(mabeyTurnables);
-            newBoard[item.y][item.x] = turnColor;
-          }
-          newBoard[y][x] = turnColor;
-        }
-        break;
-      }
-    }
     setBoard(newBoard);
     setTrunColor(3 - turnColor);
   };
