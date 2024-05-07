@@ -31,3 +31,9 @@
   background-color: white;
   border-radius: 50%;
 }
+
+.scoreStyle {
+  width: 200px;
+  height: 100px;
+  background-color: gray;
+}

@@ -1,0 +1,28 @@
+turn (
+    <div className={styles.container}>
+      <div className={styles.point}>
+        黒：{blackPoint}個
+        <br />
+        白：{whitePoint}個
+      </div>
+      <div className={styles.boardStyle}>
+        {board.map((row, y) =>
+          row.map((color, x) => (
+            <div className={styles.cellStyle} key={`${x}-${y}`} onClick={() => clickHandler(x, y)}>
+              {color !== 0 && (
+                <div
+                  className={styles.stoneStyle}
+                  style={{ background: color === 1 ? '#000' : '#fff' }}
+                />
+              )}
+            </div>
+          )),
+        )}
+      </div>
+      <div className={styles.player}>
+        {turnColor === 1 ? '黒' : '白'}
+        のターンです
+      </div>
+    </div>
+  );
+};

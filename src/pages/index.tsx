@@ -25,25 +25,38 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
   ]);
 
+  let blackPoint = 0;
+  let whitePoint = 0;
+  for (let y = 0; y <= 7; y++) {
+    for (let x = 0; x <= 7; x++) {
+      const color = board[y][x];
+      if (color === 1) {
+        blackPoint++;
+      } else if (color === 2) {
+        whitePoint++;
+      }
+    }
+  }
   const clickHandler = (x: number, y: number) => {
     console.log(x, y);
     const newBoard = structuredClone(board);
-
     for (let n: number = 0; n < 8; n++) {
-      const maybeTurnables: { x: number; y: number }[] = [];
+      //nを0<=n<8と範囲を決める。
+      const maybeTurnables: { x: number; y: number }[] = []; //maybeTurnableをx,yという数とし、空のリスト[]とする。
       const [dx, dy] = directions[n];
-
-      //下行きだった
       for (let i: number = 1; i < 8; i++) {
         if (board[y + i * dy] === undefined) {
+          //縦方向の色がなかったら(色が0)そこで止める。
           break;
-        }
-        const checkingColor = board[y + i * dy][x + i * dx];
+        } //breakで止める
+        const checkingColor = board[y + i * dy][x + i * dx]; //i * dy と i * dx方向に移動。
         if (checkingColor === undefined) {
+          //縦方向の色がなかったら(色が0)そこで止める。
           break;
-        }
+        } //breakで止める
         if (checkingColor === 3 - turnColor) {
-          maybeTurnables.push({ x: x + i * dx, y: y + i * dy });
+          //もしcheckingColorが 3 - turnColor(=相手の色)なら
+          maybeTurnables.push({ x: x + i * dx, y: y + i * dy }); //maybeTurnablesに{ x: x + i * dx, y: y + i * dy }を入れる。
         } else if (checkingColor === 0) {
           break;
         } else if (checkingColor === turnColor) {
@@ -59,14 +72,18 @@ const Home = () => {
         }
       }
     }
-
     setBoard(newBoard);
     setTrunColor(3 - turnColor);
   };
 
-  console.table(board);
   return (
     <div className={styles.container}>
+      {}
+      <div className={styles.point}>
+        黒：{blackPoint}個
+        <br />
+        白：{whitePoint}個
+      </div>
       <div className={styles.boardStyle}>
         {board.map((row, y) =>
           row.map((color, x) => (
@@ -80,6 +97,10 @@ const Home = () => {
             </div>
           )),
         )}
+      </div>
+      <div className={styles.player}>
+        {turnColor === 1 ? '黒' : '白'}
+        のターンです
       </div>
     </div>
   );
